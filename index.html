@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="et">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <title>Minu kohtumised</title>
+  <meta name="description" content="Pastelne kalender kohtumiste märkimiseks.">
+  <meta name="theme-color" content="#fce7f3">
+  <meta name="color-scheme" content="light">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Kohtumised">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+  </svg>
+
+  <main class="app">
+    <header class="header">
+      <h1 class="title">Minu kohtumised <svg class="icon icon-heart" aria-hidden="true"><use href="#i-heart"/></svg></h1>
+    </header>
+
+    <div class="install-hint" id="install-hint" hidden>
+      <p id="install-text"></p>
+      <button type="button" class="btn btn-primary btn-small" id="install-btn" hidden>Lisa</button>
+      <button type="button" class="icon-btn icon-btn-quiet" id="install-close" aria-label="Sulge vihje"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+
+    <section class="card counter" aria-label="Kuu kokkuvõte" aria-live="polite">
+      <div class="counter-total">
+        <span class="counter-number" id="count-total">0</span>
+        <span class="counter-label" id="count-label">kohtumist</span>
+      </div>
+      <div class="counter-split">
+        <span class="chip chip-past">Toimunud <strong id="count-past">0</strong></span>
+        <span class="chip chip-planned">Planeeritud <strong id="count-planned">0</strong></span>
+      </div>
+    </section>
+
+    <section class="card calendar" id="calendar" aria-label="Kalender">
+      <div class="month-nav">
+        <button type="button" class="icon-btn" id="prev-month" aria-label="Eelmine kuu"><svg class="icon" aria-hidden="true"><use href="#i-left"/></svg></button>
+        <div class="month-title">
+          <h2 class="month-label" id="month-label"></h2>
+          <button type="button" class="today-btn" id="today-btn" hidden>Täna</button>
+        </div>
+        <button type="button" class="icon-btn" id="next-month" aria-label="Järgmine kuu"><svg class="icon" aria-hidden="true"><use href="#i-right"/></svg></button>
+      </div>
+      <div class="weekdays" aria-hidden="true">
+        <span>E</span><span>T</span><span>K</span><span>N</span><span>R</span><span>L</span><span>P</span>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="legend" aria-hidden="true">
+        <span><i class="legend-dot legend-past"></i>Toimunud</span>
+        <span><i class="legend-dot legend-planned"></i>Planeeritud</span>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <button type="button" class="link-btn" id="open-backup"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg>Varukoopia</button>
+    </footer>
+  </main>
+
+  <dialog class="sheet" id="day-sheet" aria-labelledby="day-title">
+    <div class="sheet-body">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <div class="sheet-head">
+        <div>
+          <h2 id="day-title"></h2>
+          <p class="sheet-summary" id="day-summary"></p>
+        </div>
+        <button type="button" class="icon-btn" data-close aria-label="Sulge"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+      </div>
+      <ul class="meeting-list" id="meeting-list" hidden></ul>
+      <form class="add-form" id="add-form" autocomplete="off">
+        <input type="text" id="name-input" name="name" list="name-suggestions" maxlength="80" enterkeyhint="done" aria-label="Kellega">
+        <button type="submit" class="btn btn-primary">Lisa</button>
+      </form>
+      <datalist id="name-suggestions"></datalist>
+    </div>
+  </dialog>
+
+  <dialog class="sheet" id="backup-sheet" aria-labelledby="backup-title">
+    <div class="sheet-body">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <div class="sheet-head">
+        <h2 id="backup-title">Varukoopia</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Sulge"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+      </div>
+      <p class="note">Kohtumised on salvestatud ainult selles seadmes. Tee aeg-ajalt varukoopia ja hoia faili kusagil mujal, näiteks e-postis või pilves. Uues telefonis saad kohtumised sellest failist tagasi.</p>
+      <p class="note note-strong" id="backup-count"></p>
+      <p class="note" id="backup-last"></p>
+      <div class="backup-actions">
+        <button type="button" class="btn btn-primary btn-block" id="export-btn"><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Salvesta varukoopia</button>
+        <label class="btn btn-secondary btn-block"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Taasta failist<input type="file" id="import-input" class="visually-hidden" accept="application/json,.json"></label>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" hidden>
+    <span id="toast-text"></span>
+    <button type="button" id="toast-action" hidden></button>
+  </div>
+</body>
+</html>
