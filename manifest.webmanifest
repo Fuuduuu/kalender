@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "Minu kohtumised",
-  "short_name": "Kohtumised",
-  "description": "Pastelne kalender kohtumiste märkimiseks.",
+  "name": "Kliendikohtumised",
+  "short_name": "Kliendid",
+  "description": "Pastelne kalender kliendikohtumiste märkimiseks ja kuu ülevaateks.",
   "lang": "et",
   "start_url": "./",
   "scope": "./",

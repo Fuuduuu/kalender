@@ -203,7 +203,7 @@ function renderDay() {
   $('day-summary').textContent = list.length
     ? meetingPhrase(list.length, planned)
     : (planned ? 'Planeeritud kohtumisi pole' : 'Kohtumisi pole märgitud');
-  nameInput.placeholder = planned ? 'Kellega kohtud?' : 'Kellega kohtusid?';
+  nameInput.placeholder = planned ? 'Kliendi nimi' : 'Kellega kohtusid?';
 
   const items = list.map((meeting) => {
     const item = document.createElement('li');

@@ -1,24 +1,31 @@
 :root {
-  --rose-50: #fff1f2;
-  --pink-50: #fdf2f8;
-  --pink-100: #fce7f3;
-  --pink-200: #fbcfe8;
-  --pink-400: #f472b6;
-  --pink-800: #9d174d;
-  --violet-50: #f5f3ff;
-  --violet-100: #ede9fe;
-  --violet-200: #ddd6fe;
-  --violet-300: #c4b5fd;
-  --violet-400: #a78bfa;
-  --violet-800: #5b21b6;
-  --violet-900: #4c1d95;
+  --rose-50: #fff5f6;
+  --pink-50: #fdf3f8;
+  --pink-100: #fce9f2;
+  --pink-200: #f9d3e6;
+  --pink-400: #f48fc0;
+  --pink-800: #96305f;
+  --violet-50: #f7f4ff;
+  --violet-100: #efeaff;
+  --violet-200: #ded6fb;
+  --violet-300: #c3b6f5;
+  --violet-400: #a892ec;
+  --violet-800: #5b3f8f;
+  --violet-900: #462f74;
+  --peach-200: #ffe2d6;
 
-  --ink: #4a3a5e;
-  --ink-soft: #85769a;
-  --surface: rgba(255, 255, 255, 0.68);
-  --surface-border: rgba(255, 255, 255, 0.9);
-  --shadow: 0 12px 32px -14px rgba(157, 23, 77, 0.22);
-  --radius: 24px;
+  --ink: #4f4062;
+  --ink-soft: #736686;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-border: rgba(255, 255, 255, 0.95);
+  --shadow:
+    0 1px 2px rgba(150, 48, 95, 0.05),
+    0 10px 24px -16px rgba(150, 48, 95, 0.30),
+    0 28px 60px -40px rgba(91, 63, 143, 0.45);
+  --radius: 28px;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --display: "Cormorant Garamond", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --script: "Parisienne", "Snell Roundhand", "Apple Chancery", cursive;
 
   color-scheme: light;
 }
@@ -51,15 +58,34 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Pehme pastelne taust, mis liigub väga aeglaselt. */
 body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: -2;
+  background:
+    radial-gradient(38% 30% at 14% 10%, rgba(249, 211, 230, 0.85), transparent 70%),
+    radial-gradient(42% 34% at 88% 16%, rgba(255, 226, 214, 0.75), transparent 70%),
+    radial-gradient(48% 40% at 82% 90%, rgba(222, 214, 251, 0.9), transparent 70%),
+    radial-gradient(40% 34% at 10% 82%, rgba(214, 238, 240, 0.55), transparent 70%),
+    linear-gradient(150deg, var(--rose-50) 0%, var(--pink-50) 45%, var(--violet-100) 100%);
+  animation: aura 34s ease-in-out infinite alternate;
+}
+
+/* Õrn valguse virvendus tausta peal. */
+body::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
-  background:
-    radial-gradient(circle at 12% 8%, rgba(251, 207, 232, 0.7), transparent 45%),
-    radial-gradient(circle at 90% 88%, rgba(221, 214, 254, 0.85), transparent 50%),
-    linear-gradient(135deg, var(--rose-50) 0%, var(--pink-50) 45%, var(--violet-100) 100%);
+  pointer-events: none;
+  background: radial-gradient(58% 40% at 50% -6%, rgba(255, 255, 255, 0.75), transparent 70%);
+}
+
+@keyframes aura {
+  from { transform: translate3d(-1.5%, -1%, 0) scale(1.02); }
+  to   { transform: translate3d(1.5%, 1.5%, 0) scale(1.06); }
 }
 
 button {
@@ -110,63 +136,119 @@ button {
   gap: 16px;
   max-width: 480px;
   margin: 0 auto;
-  padding: calc(env(safe-area-inset-top) + 24px) 16px calc(env(safe-area-inset-bottom) + 24px);
+  padding: calc(env(safe-area-inset-top) + 26px) 16px calc(env(safe-area-inset-bottom) + 26px);
+}
+
+.app > * {
+  animation: fade-in 0.6s var(--ease) both;
+}
+
+.app > .card {
+  animation-name: rise-in;
+}
+
+.app > *:nth-child(2) { animation-delay: 0.05s; }
+.app > *:nth-child(3) { animation-delay: 0.1s; }
+.app > *:nth-child(4) { animation-delay: 0.15s; }
+.app > *:nth-child(5) { animation-delay: 0.2s; }
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(14px); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
 }
 
 .title {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 12px;
   margin: 0;
-  font-size: 1.6rem;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  color: var(--violet-800);
+  font-family: var(--script);
+  font-size: clamp(1.8rem, 7.4vw, 2.3rem);
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  padding-bottom: 2px;
+  background: linear-gradient(100deg, #5b3f8f 0%, #5b3f8f 12%, #96305f 30%, #7a3b86 48%, #5b3f8f 68%, #5b3f8f 100%);
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: title-shimmer 9s ease-in-out 1.4s infinite;
+}
+
+/* Pealkirja üle libiseb aeglane roosa helk. */
+@keyframes title-shimmer {
+  0%, 8%    { background-position: 100% 0; }
+  46%, 54%  { background-position: 0 0; }
+  92%, 100% { background-position: 100% 0; }
 }
 
 .icon-heart {
-  width: 22px;
-  height: 22px;
+  width: 21px;
+  height: 21px;
   fill: var(--pink-400);
   stroke: var(--pink-400);
   transform-origin: center;
-  animation: heartbeat 3s ease-in-out infinite;
+  filter: drop-shadow(0 3px 6px rgba(244, 143, 192, 0.55));
+  animation: heartbeat 4.5s ease-in-out infinite;
 }
 
 @keyframes heartbeat {
-  0%, 30%, 100% { transform: scale(1); }
-  10% { transform: scale(1.18); }
-  20% { transform: scale(1.06); }
+  0%, 26%, 100% { transform: scale(1); }
+  8%  { transform: scale(1.2); }
+  16% { transform: scale(1.07); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .icon-heart { animation: none; }
+.subtitle {
+  margin: 9px 0 0;
+  text-align: center;
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink-soft);
 }
 
 .card {
-  background: var(--surface);
+  position: relative;
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 44%),
+    var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25);
+  backdrop-filter: blur(16px) saturate(1.25);
 }
+
+/* ---------- Nõupud ---------- */
 
 /* ---------- Nupud ---------- */
 
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 48px;
-  padding: 0 20px;
+  height: 50px;
+  padding: 0 22px;
   border: 0;
-  border-radius: 16px;
+  border-radius: 18px;
   font-weight: 800;
+  letter-spacing: 0.01em;
   cursor: pointer;
-  transition: transform 0.12s ease;
+  overflow: hidden;
+  transition: transform 0.16s var(--ease), box-shadow 0.22s var(--ease), filter 0.22s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  filter: saturate(1.06);
 }
 
 .btn:active {
@@ -174,15 +256,35 @@ button {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--pink-200), var(--violet-200));
+  background: linear-gradient(135deg, #fcd9ea 0%, var(--pink-200) 38%, var(--violet-200) 100%);
   color: var(--violet-900);
-  box-shadow: 0 8px 20px -12px rgba(139, 92, 246, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 10px 22px -12px rgba(139, 92, 246, 0.65);
+}
+
+/* Aeglane helk üle põhinupu. */
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 45%;
+  left: -60%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+  animation: sheen 6.5s ease-in-out infinite;
+}
+
+@keyframes sheen {
+  0%, 62% { left: -60%; }
+  86%, 100% { left: 125%; }
 }
 
 .btn-secondary {
   position: relative;
   background: var(--violet-50);
   color: var(--violet-800);
+  box-shadow: inset 0 0 0 1.5px var(--violet-100);
 }
 
 .btn-block {
@@ -190,9 +292,9 @@ button {
 }
 
 .btn-small {
-  height: 36px;
-  padding: 0 14px;
-  border-radius: 12px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 13px;
 }
 
 .icon-btn {
@@ -204,19 +306,32 @@ button {
   padding: 0;
   border: 0;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   color: var(--violet-800);
   cursor: pointer;
-  transition: transform 0.12s ease;
+  box-shadow: 0 4px 12px -8px rgba(91, 63, 143, 0.7);
+  transition: transform 0.16s var(--ease), background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.icon-btn:hover {
+  background: #fff;
+  box-shadow: 0 8px 18px -10px rgba(91, 63, 143, 0.75);
 }
 
 .icon-btn:active {
-  transform: scale(0.92);
+  transform: scale(0.9);
 }
 
 .icon-btn-quiet {
   background: transparent;
   color: var(--ink-soft);
+  box-shadow: none;
+}
+
+.icon-btn-quiet:hover {
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--pink-800);
+  box-shadow: none;
 }
 
 /* ---------- Avakuva vihje ---------- */
@@ -226,11 +341,11 @@ button {
   align-items: center;
   gap: 8px;
   padding: 10px 6px 10px 16px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.92);
   box-shadow: var(--shadow);
   font-size: 0.88rem;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .install-hint p {
@@ -238,39 +353,69 @@ button {
   margin: 0;
 }
 
-/* ---------- Kuu loendur ---------- */
+/* ---------- Kuu ülevaade ---------- */
 
 .counter {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 16px 18px;
+  gap: 14px;
+  padding: 20px 22px;
+  overflow: hidden;
+  background: linear-gradient(140deg, #fbdcea 0%, #f6dff0 42%, #e2daff 100%);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+/* Aeglane valguslaik ülevaatekaardi taga. */
+.counter::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: -70%;
+  right: -25%;
+  width: 75%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent 68%);
+  animation: drift 16s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(-16%, 22%, 0) scale(1.15); }
 }
 
 .counter-total {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
 
 .counter-number {
-  font-size: 2.4rem;
-  font-weight: 800;
-  line-height: 1;
-  color: var(--violet-800);
+  font-family: var(--display);
+  font-size: 3.6rem;
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  color: var(--violet-900);
   font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.55);
 }
 
 .counter-label {
-  margin-top: 6px;
-  font-size: 0.88rem;
-  color: var(--ink-soft);
+  margin-top: 8px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #6a5a85;
 }
 
 .counter-split {
+  position: relative;
+  z-index: 1;
   display: grid;
-  gap: 6px;
+  gap: 7px;
 }
 
 .chip {
@@ -278,11 +423,17 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 6px 12px;
+  padding: 7px 13px;
   border-radius: 999px;
   font-size: 0.85rem;
   font-weight: 700;
   white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: transform 0.2s var(--ease);
+}
+
+.chip:hover {
+  transform: translateX(-2px);
 }
 
 .chip strong {
@@ -290,19 +441,19 @@ button {
 }
 
 .chip-past {
-  background: var(--violet-200);
+  background: rgba(255, 255, 255, 0.82);
   color: var(--violet-800);
 }
 
 .chip-planned {
-  background: var(--pink-200);
+  background: rgba(255, 255, 255, 0.82);
   color: var(--pink-800);
 }
 
 /* ---------- Kalender ---------- */
 
 .calendar {
-  padding: 14px 12px;
+  padding: 16px 14px;
   touch-action: pan-y;
 }
 
@@ -311,7 +462,7 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .month-title {
@@ -322,20 +473,28 @@ button {
 
 .month-label {
   margin: 0;
-  font-size: 1.15rem;
-  font-weight: 800;
+  font-family: var(--display);
+  font-size: 1.55rem;
+  font-weight: 600;
+  letter-spacing: 0.005em;
   color: var(--violet-800);
 }
 
 .today-btn {
-  padding: 4px 10px;
+  padding: 5px 11px;
   border: 0;
   border-radius: 999px;
-  background: var(--pink-100);
+  background: linear-gradient(135deg, var(--pink-100), var(--pink-200));
   color: var(--pink-800);
   font-size: 0.75rem;
   font-weight: 800;
   cursor: pointer;
+  animation: rise-in 0.4s var(--ease) both;
+  transition: transform 0.16s var(--ease);
+}
+
+.today-btn:active {
+  transform: scale(0.94);
 }
 
 .weekdays,
@@ -346,10 +505,12 @@ button {
 }
 
 .weekdays {
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--ink-soft);
 }
 
@@ -360,41 +521,73 @@ button {
   aspect-ratio: 1;
   padding: 0;
   border: 0;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.7);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.72);
   color: var(--ink);
   font-size: 0.95rem;
   font-weight: 600;
   line-height: 1;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
-  transition: transform 0.12s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: transform 0.16s var(--ease), box-shadow 0.22s var(--ease), background 0.22s ease;
+  animation: day-in 0.45s var(--ease) both;
+}
+
+/* Päevad ilmuvad õrna lainena vasakult paremale. */
+.day:nth-child(7n + 1) { animation-delay: 0.00s; }
+.day:nth-child(7n + 2) { animation-delay: 0.03s; }
+.day:nth-child(7n + 3) { animation-delay: 0.06s; }
+.day:nth-child(7n + 4) { animation-delay: 0.09s; }
+.day:nth-child(7n + 5) { animation-delay: 0.12s; }
+.day:nth-child(7n + 6) { animation-delay: 0.15s; }
+.day:nth-child(7n + 7) { animation-delay: 0.18s; }
+
+@keyframes day-in {
+  from { opacity: 0; transform: translateY(6px); }
+}
+
+.day:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 8px 18px -10px rgba(150, 48, 95, 0.5);
+  transform: translateY(-1px);
 }
 
 .day:active {
-  transform: scale(0.92);
+  transform: scale(0.9);
 }
 
 .day-blank {
   background: transparent;
+  box-shadow: none;
   cursor: default;
+  animation: none;
 }
 
 .day-past {
-  background: var(--violet-200);
+  background: linear-gradient(150deg, #e7e0fc 0%, var(--violet-200) 100%);
   color: var(--violet-800);
   font-weight: 800;
 }
 
 .day-planned {
-  background: var(--pink-200);
+  background: linear-gradient(150deg, var(--pink-200) 0%, var(--peach-200) 100%);
   color: var(--pink-800);
   font-weight: 800;
 }
 
 .day-today {
-  box-shadow: inset 0 0 0 2px var(--violet-400);
+  box-shadow:
+    inset 0 0 0 2px var(--violet-400),
+    0 0 0 0 rgba(168, 146, 236, 0.45);
   font-weight: 800;
+  animation: day-in 0.45s var(--ease) both, today-glow 3.6s ease-in-out 0.6s infinite;
+}
+
+@keyframes today-glow {
+  0%, 100% { box-shadow: inset 0 0 0 2px var(--violet-400), 0 0 0 0 rgba(168, 146, 236, 0.5); }
+  50%      { box-shadow: inset 0 0 0 2px var(--violet-400), 0 0 0 7px rgba(168, 146, 236, 0); }
 }
 
 .badge {
@@ -403,21 +596,32 @@ button {
   right: 2px;
   display: grid;
   place-items: center;
-  min-width: 15px;
-  height: 15px;
-  padding: 0 3px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--pink-800);
   font-size: 10px;
   font-weight: 800;
   line-height: 1;
+  box-shadow: 0 2px 6px -3px rgba(150, 48, 95, 0.65);
+  animation: badge-pop 0.4s var(--ease) 0.15s both;
+}
+
+.day-past .badge {
+  color: var(--violet-800);
+}
+
+@keyframes badge-pop {
+  from { opacity: 0; transform: scale(0.4); }
 }
 
 .legend {
   display: flex;
   justify-content: center;
-  gap: 16px;
-  margin-top: 12px;
+  gap: 18px;
+  margin-top: 14px;
   font-size: 0.78rem;
   color: var(--ink-soft);
 }
@@ -435,11 +639,11 @@ button {
 }
 
 .legend-past {
-  background: var(--violet-200);
+  background: linear-gradient(150deg, #e7e0fc, var(--violet-200));
 }
 
 .legend-planned {
-  background: var(--pink-200);
+  background: linear-gradient(150deg, var(--pink-200), var(--peach-200));
 }
 
 /* ---------- Jalus ---------- */
@@ -453,14 +657,24 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 16px;
+  padding: 11px 18px;
   border: 0;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.6);
   color: var(--violet-800);
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
+  transition: background 0.2s ease, transform 0.16s var(--ease), box-shadow 0.2s ease;
+}
+
+.link-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 20px -14px rgba(91, 63, 143, 0.8);
+}
+
+.link-btn:active {
+  transform: scale(0.96);
 }
 
 .link-btn .icon {
@@ -479,39 +693,47 @@ button {
   inset: auto 0 var(--keyboard, 0px) 0;
   overflow: visible;
   border: 0;
-  border-radius: 28px 28px 0 0;
-  background: #fff;
+  border-radius: 32px 32px 0 0;
+  background: linear-gradient(180deg, #fffdfe 0%, #ffffff 30%);
   color: var(--ink);
-  box-shadow: 0 -16px 40px -18px rgba(91, 33, 182, 0.35);
+  box-shadow: 0 -18px 44px -20px rgba(91, 63, 143, 0.4);
 }
 
 .sheet[open] {
-  animation: sheet-in 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: sheet-in 0.34s var(--ease);
+}
+
+.sheet[open]::backdrop {
+  animation: backdrop-in 0.28s ease both;
 }
 
 @keyframes sheet-in {
-  from { opacity: 0; transform: translateY(32px); }
+  from { opacity: 0; transform: translateY(40px); }
+}
+
+@keyframes backdrop-in {
+  from { opacity: 0; }
 }
 
 .sheet::backdrop {
-  background: rgba(76, 29, 149, 0.2);
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
+  background: rgba(76, 29, 149, 0.22);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
 }
 
 .sheet-body {
   max-height: calc(var(--viewport-height, 100dvh) - 40px);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 10px 18px calc(env(safe-area-inset-bottom) + 20px);
+  padding: 10px 20px calc(env(safe-area-inset-bottom) + 22px);
 }
 
 .sheet-handle {
-  width: 42px;
+  width: 44px;
   height: 5px;
-  margin: 0 auto 14px;
+  margin: 0 auto 16px;
   border-radius: 999px;
-  background: var(--violet-100);
+  background: linear-gradient(90deg, var(--pink-200), var(--violet-200));
 }
 
 .sheet-head {
@@ -519,13 +741,15 @@ button {
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .sheet-head h2 {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 800;
+  font-family: var(--display);
+  font-size: 1.65rem;
+  font-weight: 600;
+  letter-spacing: 0.005em;
   color: var(--violet-800);
 }
 
@@ -533,7 +757,7 @@ button {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 4px 0 0;
+  margin: 5px 0 0;
   font-size: 0.9rem;
   color: var(--ink-soft);
 }
@@ -544,16 +768,18 @@ button {
   height: 9px;
   border-radius: 50%;
   background: var(--violet-300);
+  box-shadow: 0 0 0 4px rgba(195, 182, 245, 0.28);
 }
 
 .is-planned .sheet-summary::before {
   background: var(--pink-400);
+  box-shadow: 0 0 0 4px rgba(244, 143, 192, 0.25);
 }
 
 .meeting-list {
   display: grid;
   gap: 8px;
-  margin: 0 0 14px;
+  margin: 0 0 16px;
   padding: 0;
   list-style: none;
 }
@@ -562,14 +788,25 @@ button {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 48px;
+  min-height: 50px;
   padding: 4px 4px 4px 16px;
-  border-radius: 16px;
-  background: var(--violet-50);
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--violet-50), #f3efff);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  animation: meeting-in 0.34s var(--ease) both;
+}
+
+.meeting:nth-child(2) { animation-delay: 0.04s; }
+.meeting:nth-child(3) { animation-delay: 0.08s; }
+.meeting:nth-child(4) { animation-delay: 0.12s; }
+.meeting:nth-child(n + 5) { animation-delay: 0.16s; }
+
+@keyframes meeting-in {
+  from { opacity: 0; transform: translateY(8px); }
 }
 
 .is-planned .meeting {
-  background: var(--pink-50);
+  background: linear-gradient(135deg, var(--pink-50), #fff1ec);
 }
 
 .meeting-name {
@@ -587,15 +824,16 @@ button {
 .add-form input {
   flex: 1;
   min-width: 0;
-  height: 48px;
-  padding: 0 16px;
+  height: 50px;
+  padding: 0 18px;
   border: 2px solid var(--violet-100);
-  border-radius: 16px;
+  border-radius: 18px;
   outline: none;
   background: var(--violet-50);
   color: var(--ink);
   font: inherit;
   font-size: 16px;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
 .add-form input::placeholder {
@@ -605,12 +843,18 @@ button {
 .add-form input:focus {
   border-color: var(--violet-300);
   background: #fff;
+  box-shadow: 0 0 0 4px rgba(195, 182, 245, 0.22);
+}
+
+.is-planned .add-form input:focus {
+  border-color: var(--pink-200);
+  box-shadow: 0 0 0 4px rgba(249, 211, 230, 0.4);
 }
 
 .note {
   margin: 0 0 10px;
   font-size: 0.92rem;
-  line-height: 1.5;
+  line-height: 1.55;
   color: var(--ink-soft);
 }
 
@@ -622,7 +866,7 @@ button {
 .backup-actions {
   display: grid;
   gap: 10px;
-  margin-top: 16px;
+  margin-top: 18px;
 }
 
 /* ---------- Teade ---------- */
@@ -637,34 +881,52 @@ button {
   gap: 12px;
   width: max-content;
   max-width: calc(100vw - 32px);
-  padding: 10px 10px 10px 16px;
-  border-radius: 16px;
-  background: var(--violet-900);
+  padding: 11px 11px 11px 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--violet-900), #5d3d86);
   color: #fff;
   font-size: 0.9rem;
   font-weight: 600;
-  box-shadow: 0 14px 30px -12px rgba(76, 29, 149, 0.6);
+  box-shadow: 0 16px 34px -14px rgba(70, 47, 116, 0.7);
   transform: translateX(-50%);
-  animation: toast-in 0.2s ease-out;
+  animation: toast-in 0.3s var(--ease);
 }
 
 @keyframes toast-in {
-  from { opacity: 0; transform: translate(-50%, -8px); }
+  from { opacity: 0; transform: translate(-50%, -14px) scale(0.96); }
 }
 
 .toast button {
-  padding: 6px 10px;
+  padding: 7px 12px;
   border: 0;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
   color: #fff;
   font-weight: 800;
   cursor: pointer;
+  transition: background 0.2s ease, transform 0.16s var(--ease);
+}
+
+.toast button:hover {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+.toast button:active {
+  transform: scale(0.95);
 }
 
 @media (max-width: 360px) {
   .app { padding-inline: 12px; }
   .weekdays, .grid { gap: 4px; }
-  .day { border-radius: 11px; font-size: 0.85rem; }
-  .counter-number { font-size: 2rem; }
+  .day { border-radius: 12px; font-size: 0.85rem; }
+  .counter-number { font-size: 3rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
 }
